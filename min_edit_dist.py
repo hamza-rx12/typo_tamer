@@ -1,3 +1,6 @@
+from data import kyb_k
+
+
 class min_dist:
     def __init__(
         self,
@@ -32,7 +35,12 @@ class min_dist:
                     a = self.dist_mtrx[i - 1][j - 1] + self.rep_cost
                     b = self.dist_mtrx[i][j - 1] + self.ins_cost
                     c = self.dist_mtrx[i - 1][j] + self.del_cost
-                    self.dist_mtrx[i][j] = min(a, b, c)
+                    tmp = min(a, b, c)
+
+                    if tmp == a and self.str1[j - 1] in kyb_k[self.str2[i - 1]]:
+                        tmp = tmp * 0.68
+
+                    self.dist_mtrx[i][j] = tmp
         # print(
         #     f"replace: {self.rep_cost}\t insert: {self.ins_cost}\tdelete: {self.del_cost}"
         # )
@@ -47,6 +55,8 @@ class min_dist:
             m, n = place
             x = "" if m == -1 else self.str2[m]
             y = "" if n == -1 else self.str1[n]
+
+            # if operation == "replace":
 
             self.back_trc.append({"operation": operation, "letters": (x, y)})
 
